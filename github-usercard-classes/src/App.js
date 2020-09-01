@@ -1,13 +1,14 @@
 import React from 'react';
 import axios from 'axios';
 import './App.css';
-
+import Card from "./Card"
 
 class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      user: {}
+      user: {},
+      // followers: {}
     };
   } 
 
@@ -31,16 +32,18 @@ class App extends React.Component {
   //   });
   // };
 
-  // fetchFollowers = e => {
-  //   e.preventDefault();
-  //   axios.get('https://api.github.com/users/saljahmi/followers')
-  //   .then(res=> {
-  //     console.log(res)
-  //   })
-  //   .catch(err => {
-  //     console.log(err)
-  //   })  
-  // }
+  fetchFollowers () {
+    axios.get('https://api.github.com/users/saljahmi/followers')
+    .then(res=> {
+      console.log(res)
+      // this.setState({
+      //   followers: res
+      // })
+    })
+    .catch(err => {
+      console.log(err)
+    })  
+  }
 
 
 
@@ -48,15 +51,9 @@ class App extends React.Component {
     return(
       <div className = "App">
         <h1>Github User Card</h1>
-        <div className = "user">
-          <h2>{this.state.user.name}</h2>
-          <img src={this.state.user.avatar_url} alt="user"/>
-          <p><b>Github Profile:</b></p>
-          <a href={this.state.user.html_url}>{this.state.user.html_url} </a>
-          <p><b>Location:</b> {this.state.user.location}</p>
-          <p><b>About:</b> {this.state.user.bio}</p>
-
-        </div>
+        <Card 
+          user = {this.state.user}
+        />
       </div>
     )
   }
