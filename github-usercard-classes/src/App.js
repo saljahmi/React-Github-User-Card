@@ -2,50 +2,41 @@ import React from 'react';
 import axios from 'axios';
 import './App.css';
 import Card from "./Card"
+import Followers from "./Followers"
 
 class App extends React.Component {
   constructor() {
     super();
     this.state = {
+      username: 'saljahmi',
       user: {},
-      // followers: {}
+      followers: [],
     };
   } 
 
-  componentDidMount() {
-    axios.get('https://api.github.com/users/saljahmi')
+  setUser(username){
+    axios.get(`https://api.github.com/users/${username}`)
       .then(res=> {
         console.log(res)
         this.setState({
-          user: res.data
+          user: res.data,
+        })
+      })
+      .catch(err => console.log(err))
+    axios.get(`https://api.github.com/users/${username}/followers`)
+      .then(res => {
+        console.log(res)
+        this.setState({
+          followers: res.data,
         })
         console.log(this.state)
       })
       .catch(err => console.log(err))
   }
 
-  // componentDidUpdate
-
-  // handleChanges = e => {
-  //   this.setState({
-  //     user: e.target.value
-  //   });
-  // };
-
-  fetchFollowers () {
-    axios.get('https://api.github.com/users/saljahmi/followers')
-    .then(res=> {
-      console.log(res)
-      // this.setState({
-      //   followers: res
-      // })
-    })
-    .catch(err => {
-      console.log(err)
-    })  
+  componentDidMount() {
+    this.setUser(this.state.username)
   }
-
-
 
   render() {
     return(
@@ -54,6 +45,11 @@ class App extends React.Component {
         <Card 
           user = {this.state.user}
         />
+        <Followers
+          user = {this.state.user}
+          followers = {this.state.followers}
+        />
+
       </div>
     )
   }
